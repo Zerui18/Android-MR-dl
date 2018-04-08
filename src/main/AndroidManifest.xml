@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="39" android:versionName="2.0.1" android:installLocation="preferExternal" package="jp.co.craftegg.band" platformBuildVersionCode="23" platformBuildVersionName="6.0-2704002">
+    <supports-screens android:anyDensity="true" android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <permission android:name="jp.co.craftegg.band.permission.C2D_MESSAGE" android:protectionLevel="signature|signatureOrSystem" />
+    <uses-permission android:name="jp.co.craftegg.band.permission.C2D_MESSAGE" />
+    <application android:theme="@*android:style/Theme.NoTitleBar.Fullscreen" android:label="@string/app_name" android:icon="@drawable/app_icon" android:debuggable="false" android:banner="@drawable/app_banner" android:isGame="true">
+        <activity android:label="@string/app_name" android:name="com.unity3d.player.UnityPlayerActivity" android:launchMode="singleTask" android:screenOrientation="sensorLandscape" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+        </activity>
+        // メーラー起動
+        <activity android:label="MailSenderActivity" android:name="jp.co.craftegg.band.MailSenderActivity" />
+        <provider android:name="android.support.v4.content.FileProvider" android:exported="false" android:authorities="jp.co.craftegg.band.provider" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
+        </provider>
+        <receiver android:name="com.tapjoy.InstallReferrerReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+            <meta-data android:name="APPADFORCE_FORWARD_RECEIVER" android:value="co.cyberz.fox.FoxInstallReceiver" />
+        </receiver>
+        <receiver android:name="com.tapjoy.GCMReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.gcm.intent.RETRY" />
+                <category android:name="jp.co.craftegg.band" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.tapjoy.TapjoyReceiver" />
+        <activity android:name="co.cyberz.fox.support.unity.IntentReceiverActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="garupa" />
+            </intent-filter>
+        </activity>
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:name="com.tapjoy.TJAdUnitActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:hardwareAccelerated="true" />
+        <activity android:name="com.tapjoy.mraid.view.ActionHandler" android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name="com.tapjoy.mraid.view.Browser" android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.tapjoy.TJContentActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="ANALYTICS_SERVER_URL" android:value="01c5b701dfab1a1a5ec97707ed60f1aa33ea851b8a4fa3beac54434fc7d4c325bc3c9fdcfd5a652cdf5a36dbde769fd978" />
+        <meta-data android:name="com.tapjoy.appstore" android:value="Google" />
+        // 通知バー用 小アイコン
+        <meta-data android:name="com.tapjoy.notification.icon" android:resource="@drawable/notify" />
+        // 通知パネル用 大アイコン (SDK 11.6.0 以降)
+    
+
+    // Android 5.0 以前の端末用の通知バー用アイコン(SDK 11.6.0 以降)
+        <meta-data android:name="com.tapjoy.notification.icon.compat" android:resource="@drawable/notify" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|layoutDirection" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:name="com.google.games.bridge.NativeBridgeActivity" />
+        <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID" android:value="" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="289088507819" />
+        <meta-data android:name="com.google.android.gms.games.unityVersion" android:value="0.9.36" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity" android:exported="false" android:excludeFromRecents="true" />
+        <service android:name="com.google.android.gms.auth.api.signin.RevocationBoundService" android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION" android:exported="true" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.google.android.gms.common.api.GoogleApiActivity" android:exported="false" />
+    </application>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="23" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-feature android:glEsVersion="20000" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
+</manifest>
