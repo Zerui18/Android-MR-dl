@@ -9,8 +9,7 @@ import android.view.*
 import android.widget.SearchView
 import com.explore.chenzerui.mr_dl.MRBackend.MRClient
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_search.*
-import java.lang.ref.WeakReference
+import kotlinx.android.synthetic.main.fragment_manga_search.*
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -64,7 +63,7 @@ class MSearchFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.fragment_search, container, false)
+        return inflater!!.inflate(R.layout.fragment_manga_search, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

@@ -36,7 +36,7 @@ class MChaptersListAdapter(context: Context, val seriesMeta: MRSeriesMeta): Arra
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: inflater.inflate(R.layout.cell_chapter_info, parent, false)
+        val view = convertView ?: inflater.inflate(R.layout.cell_manga_chapter_info, parent, false)
 
         val cellHolder: CellHolder
 

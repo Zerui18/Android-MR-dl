@@ -1,8 +1,6 @@
 package com.explore.chenzerui.mr_dl
 
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import com.explore.chenzerui.mr_dl.MRBackend.MRSeriesMeta
 import com.explore.chenzerui.mr_dl.MRBackend.MRSeriesMetaResponse
 import com.explore.chenzerui.mr_dl.MRBackend.MRShortMeta
 import org.jetbrains.anko.find
-import java.lang.ref.WeakReference
 
 class MSearchListAdapter(context: Context): ArrayAdapter<MRShortMeta>(context, 0) {
 
@@ -85,7 +82,7 @@ class MSearchListAdapter(context: Context): ArrayAdapter<MRShortMeta>(context, 0
     override fun getCount(): Int = items.size
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: inflater.inflate(R.layout.cell_search_result, parent, false)
+        val view = convertView ?: inflater.inflate(R.layout.cell_manga_search_result, parent, false)
         val cellHolder: CellHolder
 
         if(view.tag == null) {
