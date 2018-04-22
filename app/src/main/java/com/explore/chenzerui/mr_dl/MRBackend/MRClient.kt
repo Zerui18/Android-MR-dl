@@ -2,7 +2,10 @@ package com.explore.chenzerui.mr_dl.MRBackend
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
@@ -15,13 +18,15 @@ object MRClient {
         const val getMetasURL = "https://api.mangarockhd.com/meta"
     }
 
-    private fun <DataType> sendRequest(request: Request, completion: (MRAPIResponse<DataType>?, FuelError?)-> Unit) {
-        request.responseObject(MRAPIResponse.Deserializer<DataType>()) {_, _, result ->
+    private inline fun <reified DataType> sendRequest(request: Request, crossinline completion: (MRAPIResponse<DataType>?, FuelError?)-> Unit) {
+        request.responseString {_, _, result ->
             if(result.component2() != null) {
                 completion(null, result.component2())
             }
             else {
-                completion(result.component1(), null)
+                log<MRClient>(DataType::class)
+                val json = result.component1()!!
+                completion(ObjectMapper().readValue(json), null)
             }
         }
     }
@@ -35,7 +40,7 @@ object MRClient {
     fun completeSearch(query: String, completion: (MRCompleteSearchResponse?, FuelError?) -> Unit) {
         val body = jacksonObjectMapper().writeValueAsString(mapOf(
                 "type"      to      "series",
-                "query"     to      query
+                "keywords"  to      query
         ))
         val request = Fuel.post(APIs.searchURL).body(body)
 
@@ -49,7 +54,7 @@ object MRClient {
         sendRequest(request, completion)
     }
 
-    fun getSerieMeta(oid: String, completion: (MRSerieMetaResponse?, FuelError?) -> Unit) {
+    fun getSeriesMeta(oid: String, completion: (MRSeriesMetaResponse?, FuelError?) -> Unit) {
         val request = Fuel.get("https://api.mangarockhd.com/query/web400/info?oid=$oid&last=0&country=Singapore")
 
         sendRequest(request, completion)
@@ -62,7 +67,7 @@ object MRClient {
     }
 
     fun loadMRImage(url: String, completion: (Bitmap?) -> Void) {
-        val result = Fuel.get(url).response {_, _, result ->
+        Fuel.get(url).response {_, _, result ->
             val bitmap = result.component1()?.let {
                 return@let MRImageDecrypter.decrypt(it)?.let{
                     BitmapFactory.decodeByteArray(it, 0, it.size)
