@@ -14,7 +14,7 @@ import com.explore.chenzerui.mr_dl.MRBackend.MRSeriesMetaResponse
 import com.explore.chenzerui.mr_dl.MRBackend.MRShortMeta
 import org.jetbrains.anko.find
 
-class MSearchListAdapter(context: Context): ArrayAdapter<MRShortMeta>(context, 0) {
+class MSearchListAdapter(context: Context, val layout: Int): ArrayAdapter<MRShortMeta>(context, 0) {
 
     var items by observing(arrayOf<MRShortMeta>(), didSet = { _ ->
         notifyDataSetInvalidated()
@@ -73,16 +73,14 @@ class MSearchListAdapter(context: Context): ArrayAdapter<MRShortMeta>(context, 0
 
     }
 
-    private val inflater by lazy {
-        LayoutInflater.from(context)
-    }
+    private val inflater = LayoutInflater.from(context)
 
     override fun isEmpty(): Boolean = items.isEmpty()
 
     override fun getCount(): Int = items.size
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: inflater.inflate(R.layout.cell_manga_search_result, parent, false)
+        val view = convertView ?: inflater.inflate(layout, parent, false)
         val cellHolder: CellHolder
 
         if(view.tag == null) {

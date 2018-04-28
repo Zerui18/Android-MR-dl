@@ -27,8 +27,6 @@
         android:textColor="@android:color/white"
         android:textSize="22sp"
         android:singleLine="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:ellipsize="marquee"
         android:scrollHorizontally="true"
         android:marqueeRepeatLimit="marquee_forever"

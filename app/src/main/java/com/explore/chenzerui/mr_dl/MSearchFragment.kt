@@ -18,7 +18,7 @@ class MSearchFragment: Fragment() {
     var delayedSearch: TimerTask? = null
     var latestQuery = ""
     val resultsAdapter by lazy {
-        MSearchListAdapter(activity)
+        MSearchListAdapter(activity, R.layout.cell_manga_search_result)
     }
 
     private val queryTextListener = object: SearchView.OnQueryTextListener {
@@ -34,11 +34,11 @@ class MSearchFragment: Fragment() {
             }
 
             delayedSearch = Timer().schedule(300) {
-                MRClient.quickSearch(newText) { response, _ ->
-                    val oids = response?.data?.get("series")
-                    if(newText != latestQuery || oids == null) return@quickSearch
+                MRClient.completeSearch(newText) { response, _ ->
+                    val oids = response?.data
+                    if(newText != latestQuery || oids == null) return@completeSearch
 
-                    MRClient.getMetas(oids.toTypedArray()) { metasResponse, _ ->
+                    MRClient.getMetas(oids) { metasResponse, _ ->
                         if(newText == latestQuery) resultsAdapter.items = metasResponse?.data?.values?.toTypedArray() ?: arrayOf()
                     }
                 }
@@ -46,14 +46,7 @@ class MSearchFragment: Fragment() {
             return true
         }
 
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            if(query == null) return true
-
-            val searchIntent = Intent(Intent.ACTION_SEARCH)
-            searchIntent.putExtra(SearchManager.QUERY, query)
-            startActivity(searchIntent)
-            return true
-        }
+        override fun onQueryTextSubmit(query: String?) = true
     }
 
 
@@ -86,11 +79,11 @@ class MSearchFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         activity.toolbar.title = "Search"
-        resultsList.adapter = resultsAdapter
 
+        resultsList.divider = null
+        resultsList.adapter = resultsAdapter
         resultsList.setOnItemClickListener { _, cell, _, _ ->
             val holder = cell.tag as MSearchListAdapter.CellHolder
-
             Statics.seriesMeta = holder.seriesMeta ?: return@setOnItemClickListener
 
             val intent = Intent(activity, MInfoActivity::class.java)

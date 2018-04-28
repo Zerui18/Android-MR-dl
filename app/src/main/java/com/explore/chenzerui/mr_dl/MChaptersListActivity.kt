@@ -17,7 +17,8 @@ class MChaptersListActivity: Activity() {
         chaptersList.adapter = MChaptersListAdapter(this, seriesMeta)
         chaptersList.setOnItemClickListener { _, _, position, _ ->
             Statics.chapterMeta = seriesMeta.chapters[position]
-            val intent = Intent(this, )
+            val intent = Intent(this, MViewerActivity::class.java)
+            startActivity(intent)
         }
     }
 
