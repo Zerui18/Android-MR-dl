@@ -1,28 +1,33 @@
 package com.explore.chenzerui.mr_dl.MRBackend
 
+//import android.arch.persistence.room.Entity
+//import android.arch.persistence.room.Ignore
+//import android.arch.persistence.room.PrimaryKey
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder
-import java.net.URL
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
+//@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class MRSeriesMeta(@JsonProperty("oid") val oid: String,
-                        @JsonProperty("name") val name: String,
-                        @JsonProperty("author") val author: String,
-                        @JsonProperty("completed") private val completed: Boolean=false,
-                        @JsonProperty("last_update") private val lastUpdated: Date,
-                        @JsonProperty("total_chapters") private val chaptersCount: Int,
-                        @JsonProperty("description") val seriesDescription: String,
-                        @JsonProperty("thumbnail") val thumbnailURL: String,
-                        @JsonProperty("cover") val coverURL: String,
-                        @JsonProperty("artworks") val artworkURLs: Array<String>,
-                        @JsonProperty("alias") val alias: Array<String>,
-                        @JsonProperty("chapters") val chapters: Array<MRChapterMeta>) {
+data class MRSeriesMeta(@JsonProperty("oid") /*@PrimaryKey*/ var oid: String,
+                        @JsonProperty("name") var name: String,
+                        @JsonProperty("author") var author: String,
+                        @JsonProperty("completed") var completed: Boolean,
+                        @JsonProperty("last_update") var lastUpdated: Date,
+                        @JsonProperty("total_chapters") var chaptersCount: Int,
+                        @JsonProperty("description") var seriesDescription: String,
+                        @JsonProperty("thumbnail") var thumbnailURL: String,
+                        @JsonProperty("cover") var coverURL: String,
+//                        @JsonProperty("artworks") val artworkURLs: Array<String>,
+//                        @JsonProperty("alias") val alias: Array<String>,
+                        @JsonProperty("chapters") /*@Ignore*/ var chapters: Array<MRChapterMeta>) {
+
+//    constructor(): this("", "", "", false, Date(), 0, "", "", "", arrayOf())
 
     companion object {
+//        @Ignore
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
     }
 
@@ -34,12 +39,12 @@ data class MRSeriesMeta(@JsonProperty("oid") val oid: String,
         return oid.hashCode()
     }
 
-    val stateDescription by lazy {
-        "${if(completed) "Completed" else "Ongoing"}, $chaptersCount chapters"
-    }
+//    @Ignore
+    @JsonIgnore
+    val stateDescription = "${if(completed) "Completed" else "Ongoing"}, $chaptersCount chapters"
 
-    val dateDescription: String by lazy {
-        dateFormat.format(lastUpdated)
-    }
+//    @Ignore
+    @JsonIgnore
+    val dateDescription: String = dateFormat.format(lastUpdated)
 
 }

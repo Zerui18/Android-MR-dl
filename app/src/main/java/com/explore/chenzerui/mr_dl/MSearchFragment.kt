@@ -5,6 +5,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import com.explore.chenzerui.mr_dl.MRBackend.MRClient
@@ -38,7 +39,8 @@ class MSearchFragment: Fragment() {
                     val oids = response?.data
                     if(newText != latestQuery || oids == null) return@completeSearch
 
-                    MRClient.getMetas(oids) { metasResponse, _ ->
+                    MRClient.getMetas(oids.toTypedArray()) { metasResponse, _ ->
+                        Log.i("Metas", "$metasResponse")
                         if(newText == latestQuery) resultsAdapter.items = metasResponse?.data?.values?.toTypedArray() ?: arrayOf()
                     }
                 }

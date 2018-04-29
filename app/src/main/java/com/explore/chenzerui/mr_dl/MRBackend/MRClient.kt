@@ -24,7 +24,6 @@ object MRClient {
                 completion(null, result.component2())
             }
             else {
-                log<MRClient>(DataType::class)
                 val json = result.component1()!!
                 completion(ObjectMapper().readValue(json), null)
             }

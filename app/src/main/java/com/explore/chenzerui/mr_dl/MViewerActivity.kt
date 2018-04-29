@@ -29,13 +29,13 @@ class MViewerActivity: AppCompatActivity() {
                 else viewPager.currentItem = 1
             }
             else {
-                this.imageURLs = arrayOf()
+                this.imageURLs = listOf()
                 overlay.text = "Loading Failed\nYour internet connection appears to be offline."
             }
         }
     })
 
-    private var imageURLs: Array<String> by observing(arrayOf(), didSet = {_ ->
+    private var imageURLs: List<String> by observing(listOf(), didSet = {_ ->
         viewPager.adapter!!.notifyDataSetChanged()
     })
 

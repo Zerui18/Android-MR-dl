@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var shared: MainActivity? = null
+        lateinit var shared: MainActivity
 
         val fragments by lazy {
             arrayOf(MDownloadsFragment(), MSearchFragment())

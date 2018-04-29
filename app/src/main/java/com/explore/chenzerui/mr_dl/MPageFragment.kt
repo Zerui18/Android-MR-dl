@@ -10,7 +10,15 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_manga_page.*
 
 @SuppressLint("ValidFragment")
-class MPageFragment(private val imageURL: String?, private val onClick: ((View)->Unit)?): Fragment() {
+class MPageFragment(): Fragment() {
+
+    private var imageURL: String? = null
+    private var onClick: ((View)->Unit)? = null
+
+    constructor(imageURL: String?, onClick: ((View)->Unit)?): this() {
+        this.imageURL = imageURL
+        this.onClick = onClick
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_manga_page, container, false)
