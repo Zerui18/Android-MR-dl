@@ -1,6 +1,5 @@
 package com.explore.chenzerui.mr_dl.MRBackend
 
-import java.net.URL
 
 /**
  * Created by chenzerui on 7/4/18.

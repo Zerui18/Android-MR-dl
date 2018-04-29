@@ -20,12 +20,12 @@ class MViewerActivity: AppCompatActivity() {
         pageButton.isClickable = false
         chapterMeta.fetchImageURLs { imageURLs ->
             if(imageURLs != null) {
-                this.imageURLs = imageURLs
+                this.imageURLs = imageURLs.reversedArray()
                 pageButton.text = "1/${imageURLs.size}"
                 overlay.visibility = View.INVISIBLE
                 pageButton.isClickable = true
                 viewPager.adapter!!.notifyDataSetChanged()
-                if(lastChapter.order<=chapterMeta.order) viewPager.setCurrentItem(translatedIndex(0), false)
+                if(lastChapter.order <= chapterMeta.order) viewPager.setCurrentItem(imageURLs.size, false)
                 else viewPager.currentItem = 1
             }
             else {
@@ -49,8 +49,6 @@ class MViewerActivity: AppCompatActivity() {
         chapterMeta = Statics.chapterMeta!!
     }
 
-    private fun translatedIndex(original: Int): Int = imageURLs.size-1-original
-
     private fun setupViewPager() {
         viewPager.adapter = Adapter()
         viewPager.offscreenPageLimit = 5
@@ -66,11 +64,11 @@ class MViewerActivity: AppCompatActivity() {
                         // go to next chapter
                         if(chapterMeta.order < seriesMeta.chapters.size) chapterMeta = seriesMeta.chapters[chapterMeta.order+1]
                     }
-                    imageURLs.size -> {
+                    imageURLs.size+1 -> {
                         // got to prev chapter
                         if(chapterMeta.order > 0) chapterMeta = seriesMeta.chapters[chapterMeta.order-1]
                     }
-                    else -> pageButton.text = "${translatedIndex(position)+1}/${imageURLs.size}"
+                    else -> pageButton.text = "${imageURLs.size+1-position}/${imageURLs.size}"
                 }
             }
         })
@@ -85,8 +83,8 @@ class MViewerActivity: AppCompatActivity() {
     private inner class Adapter: FragmentStatePagerAdapter(supportFragmentManager) {
         override fun getCount(): Int = imageURLs.size + 2
         override fun getItem(position: Int): Fragment {
-            if(imageURLs.isEmpty() || position <= 0 || position >= imageURLs.size) return MPageFragment(null, null)
-            return MPageFragment(imageURLs[translatedIndex(position)], {_ ->
+            if(imageURLs.isEmpty() || position == 0 || position == imageURLs.size+1) return MPageFragment(null, null)
+            return MPageFragment(imageURLs[position-1], {_ ->
                 if(supportActionBar!!.isShowing) supportActionBar!!.hide()
                 else supportActionBar!!.show()
             })
